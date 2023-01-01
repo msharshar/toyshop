@@ -20,11 +20,11 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <label class="form-label">From</label>
-                                    <input type="number" name="min-price" class="form-control" placeholder="Min price">
+                                    <input type="number" name="min-price" class="form-control" placeholder="Min price" value="<?php if(isset($_GET["min-price"])){echo $_GET["min-price"];} ?>">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label">To</label>
-                                    <input type="number" name="max-price" class="form-control" placeholder="Max price">
+                                    <input type="number" name="max-price" class="form-control" placeholder="Max price" value="<?php if(isset($_GET["max-price"])){echo $_GET["max-price"];} ?>">
                                 </div>
                             </div>
                         </div>
@@ -38,14 +38,25 @@
                             $brands = $stmt->fetchAll();
 
                             foreach($brands as $brand) {
-                                echo '
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="'.$brand["brand"].'">
-                                    <label class="form-check-label">
-                                        '.$brand["brand"].'
-                                    </label>
-                                </div>
-                                ';
+                                if(isset($_GET[$brand["brand"]])){
+                                    echo '
+                                    <div class="form-check">
+                                        <input class="form-check-input" checked type="checkbox" name="'.$brand["brand"].'">
+                                        <label class="form-check-label">
+                                            '.$brand["brand"].'
+                                        </label>
+                                    </div>
+                                    ';
+                                }else{
+                                    echo '
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="'.$brand["brand"].'">
+                                        <label class="form-check-label">
+                                            '.$brand["brand"].'
+                                        </label>
+                                    </div>
+                                    ';
+                                }
                             }
                         ?>
 
