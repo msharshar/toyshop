@@ -13,22 +13,43 @@
                     <h2>Filter options</h2>
                     <p>Select what you need</p>
                     <hr>
-                    <form action="">
+                    <form method="GET" action="">
+                        <input type="hidden" name="action" value="filter">
                         <div>
                             <h5 class="form-label">Price range</h5>
-                            <input type="range" class="form-range">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label class="form-label">From</label>
+                                    <input type="number" name="min-price" class="form-control" placeholder="Min price">
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label">To</label>
+                                    <input type="number" name="max-price" class="form-control" placeholder="Max price">
+                                </div>
+                            </div>
                         </div>
 
-                        <br>
+                        <hr>
                         <h5>Select brand</h5>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="">
-                            <label class="form-check-label">
-                                Brand
-                            </label>
-                        </div>
+                        <!-- Get all brands dynamically -->
+                        <?php
+                            $stmt = $con->prepare("SELECT DISTINCT brand FROM items");
+                            $stmt->execute();
+                            $brands = $stmt->fetchAll();
 
-                        <br>
+                            foreach($brands as $brand) {
+                                echo '
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="'.$brand["brand"].'">
+                                    <label class="form-check-label">
+                                        '.$brand["brand"].'
+                                    </label>
+                                </div>
+                                ';
+                            }
+                        ?>
+
+                        <hr>
                         <button type="submit" class="btn btn-success">Filter products</button>
                     </form>
 
@@ -39,9 +60,44 @@
                 <p>Choose from a variety of products</p>
 
                 <?php
-                    $stmt = $con->prepare("SELECT * FROM items");
-                    $stmt->execute();
-                    $products = $stmt->fetchAll();
+
+                    if($_SERVER["REQUEST_METHOD"] == "GET" && $_GET["action"] == "filter"){
+
+                        if($_GET["min-price"] == ""){
+                            $minPrice = 0;
+                        }else{
+                            $minPrice = $_GET["min-price"];
+                        }
+
+                        if($_GET["max-price"] == ""){
+                            $maxPrice = 100000;
+                        }else{
+                            $maxPrice = $_GET["max-price"];
+                        }
+
+                        $selectedBrands = [];
+                        foreach($brands as $brand) {
+                            if(isset($_GET[$brand["brand"]])){
+                                $selectedBrands[] = $brand["brand"];
+                            }
+                        }
+                        if($selectedBrands == []) {
+                            foreach($brands as $brand) {
+                                $selectedBrands[] = $brand["brand"];
+                            }
+                        }
+                        $selectedBrands = '("' . implode('","', $selectedBrands) .'")';
+
+                        $stmt = $con->prepare('SELECT * FROM items WHERE brand IN' . $selectedBrands . 'AND price BETWEEN ? AND ?');
+                        $stmt->execute(array($minPrice, $maxPrice));
+                        $products = $stmt->fetchAll();
+
+                    }else{
+                        $stmt = $con->prepare("SELECT * FROM items");
+                        $stmt->execute();
+                        $products = $stmt->fetchAll();
+                    }
+
 
                     foreach($products as $product) {
                 ?>
@@ -104,3 +160,30 @@
     include "inc/footer.php";
     ob_end_flush();
 ?>
+
+<!-- Handle Add to Cart Request -->
+<?php
+
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+    $email = $_POST["email"];
+    $password = $_POST["password"];
+
+    $stmt = $con->prepare("SELECT * FROM users WHERE email=? AND password=?");
+    $stmt->execute(array($email, $password));
+    $user = $stmt->fetch();
+
+    if($user) {
+        $_SESSION["userID"] = $user["id"];
+
+        if(isset($_POST["rememberme"])) {
+            setcookie("userID", $user["id"]);
+        }
+
+        header('Location: index.php');
+    }else{
+        $_SESSION["loginError"] = "User not found";
+        header('Location: login.php');
+    }
+
+}

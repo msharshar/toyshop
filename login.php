@@ -2,11 +2,17 @@
     include "init.php";
     include "inc/header.php";
     include "inc/navbar.php";
+
+    if(checkAuth()) {
+        header('Location: index.php');
+    }
 ?>
 
 <div class="container">
 
     <form class="login-form" method="POST">
+        <h4>Login to your account</h4>
+        <br>
         <?php
             if(isset($_SESSION["loginError"])) {
                 echo '
@@ -23,7 +29,7 @@
             <input type="password" name="password" class="form-control" required>
         </div>
         <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input">
+            <input type="checkbox" class="form-check-input" name="rememberme">
             <label class="form-check-label">Remember me</label>
         </div>
 
@@ -53,6 +59,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     if($user) {
         $_SESSION["userID"] = $user["id"];
+
+        if(isset($_POST["rememberme"])) {
+            setcookie("userID", $user["id"]);
+        }
+
         header('Location: index.php');
     }else{
         $_SESSION["loginError"] = "User not found";
