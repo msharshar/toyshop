@@ -2,6 +2,10 @@
     include "init.php";
     include "inc/header.php";
     include "inc/navbar.php";
+
+    if(checkAuth()) {
+        header('Location: index.php');
+    }
 ?>
 
 <div class="container">
