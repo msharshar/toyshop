@@ -7,6 +7,15 @@
 <div class="shop">
 
     <div class="container">
+        <!-- <div class="row">
+            <div class="col-lg-3">
+                
+            </div>
+            <div class="col-lg-9">
+
+            </div>
+        </div> -->
+
         <h2>Our Products</h2>
         <p>Choose from a variety of products</p>
 
@@ -19,7 +28,7 @@
         ?>
                 <div class="product">
                     <div class="outside">
-                        <div class="top"></div>
+                        <div class="top" style="background: url(uploads/products/<?php echo $product["image"] ?>) no-repeat center center"></div>
                         <div class="bottom">
                         <div class="left">
                             <div class="details">
@@ -43,36 +52,21 @@
                         <div class="contents">
                         <table>
                             <tr>
-                            <th>Width</th>
-                            <th>Height</th>
+                                <th>Brand</th>
                             </tr>
                             <tr>
-                            <td>3000mm</td>
-                            <td>4000mm</td>
+                                <td><?php echo $product["brand"] ?></td>
+                            </tr>
+
+                            <tr>
+                                <th><br></th>
+                            </tr>
+                
+                            <tr>
+                                <th>Description</th>
                             </tr>
                             <tr>
-                            <th>Something</th>
-                            <th>Something</th>
-                            </tr>
-                            <tr>
-                            <td>200mm</td>
-                            <td>200mm</td>
-                            </tr>
-                            <tr>
-                            <th>Something</th>
-                            <th>Something</th>
-                            </tr>
-                            <tr>
-                            <td>200mm</td>
-                            <td>200mm</td>
-                            </tr>
-                            <tr>
-                            <th>Something</th>
-                            <th>Something</th>
-                            </tr>
-                            <tr>
-                            <td>200mm</td>
-                            <td>200mm</td>
+                                <td><?php echo $product["description"] ?></td>
                             </tr>
                         </table>
                         </div>
