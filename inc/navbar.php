@@ -13,7 +13,7 @@
                     <a class="nav-link" href="#"><i class="bi bi-cart-fill"></i> Cart</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="login.php"><i class="bi bi-person-fill"></i> Login</a>
+                    <a class="nav-link disabled">Disabled</a>
                 </li>
             </ul>
             <form class="d-flex" role="search" style="flex-grow: 1; margin-left: 30px">
