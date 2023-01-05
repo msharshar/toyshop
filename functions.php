@@ -17,15 +17,6 @@
         return $user;
     }
 
-    function getProduct($productID) {
-        global $con;
-        $stmt = $con->prepare("SELECT * FROM items WHERE id=?");
-        $stmt->execute(array($productID));
-        $product = $stmt->fetch();
-
-        return $product;
-    }
-
     function inCart($userID, $productID, $user_type) {
 
         global $con;
