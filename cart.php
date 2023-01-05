@@ -23,14 +23,10 @@
                     <?php 
                         $stmt = $con->prepare("SELECT * FROM cart WHERE user_id=? AND user_type=?");
                         $stmt->execute(array($userID, $userType));
-                        $cartProducts = $stmt->fetchAll();
+                        $products = $stmt->fetchAll();
 
-                        if($stmt->rowCount() == 0){
-                            echo '<div class="alert alert-warning text-center">Your cart is empty. <a href="index.php">Go shopping now!</a></div>';
-                        }
-
-                        foreach($cartProducts as $cartProduct) {
-                            $product = getProduct($cartProduct["item_id"]);
+                        foreach($products as $product) {
+                            $product = getProduct($product["item_id"]);
                             ?>
                             <div class="cart-product">
                                 <div class="row">
@@ -38,13 +34,11 @@
                                         <img src="uploads/products/<?php echo $product["image"]; ?>" alt="product_img">
                                     </div>
                                     <div class="col-lg-9">
-                                        <h5><?php echo $product["name"] ?></h5>
-                                        <span class="price">£<?php echo $product["price"]*$cartProduct["quantity"] ?></span>
+                                        <p><?php echo $product["name"] ?></p>
+                                        <span>£<?php echo $product["price"] ?></span>
                                         <div class="mt-3">
                                             <label class="form-label">Quantity: </label>
-                                            <input type="number" name="quantity" class="form-control quantity" min="1" value="<?php echo $cartProduct["quantity"]  ?>" required>
-                                            <input type="hidden" class="originaPrice" value="<?php echo $product["price"] ?>">
-                                            <input type="hidden" class="productID" value="<?php echo $product["id"] ?>">
+                                            <input type="number" name="quantity" class="form-control" value="1" required>
                                         </div>
                                         <button class="btn btn-danger remove-btn">Remove</button>
                                     </div>
