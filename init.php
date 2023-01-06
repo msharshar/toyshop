@@ -12,4 +12,8 @@
         $user = getUser($_SESSION["userID"]);
     }
 
+    if(!isset($_COOKIE["guestID"])) {
+        setcookie("guestID", rand(1000, 10000000));
+    }
+
 ?>
