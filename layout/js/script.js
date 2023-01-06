@@ -82,7 +82,7 @@ $(".promocode-btn").click(function(){
     var promocode = $(".promocode").val();
     if(promocode !== "") {
         $(".promocode-success").fadeIn()
-        $("#discount").html("20%")
+        $("#discount").html("15%")
     }else{
         $(".promocode-error").html("Please enter a valid code")
         $(".promocode-error").fadeIn(function(){

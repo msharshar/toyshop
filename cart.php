@@ -18,7 +18,6 @@
             <div class="col-lg-9">
                 <div class="cart-products">
                     <h4>Cart products</h4>
-                    <span>Check them out</span>
                     <hr>
                     <br>
                     <?php 
@@ -61,7 +60,10 @@
                 <form method="POST">
                 <div class="cart-products">
                     <h4>Shippment info</h4>
+<<<<<<< HEAD
                     <span>All fields required</span>
+=======
+>>>>>>> b43bd105ca25c24bc30af3eb334f73b0380dd07b
                     <hr><br>
                     <div class="row">
                         <div class="col-lg-6">
@@ -80,7 +82,11 @@
 
                         <div class="col-lg-6">
                             <label class="form-label">Phone</label>
+<<<<<<< HEAD
                             <input type="text" name="cus_phone" class="form-control" required>
+=======
+                            <input type="text" name="cus_address" class="form-control" required>
+>>>>>>> b43bd105ca25c24bc30af3eb334f73b0380dd07b
                         </div>
 
                         <div class="col-lg-6">
@@ -91,7 +97,10 @@
                 </div>
                 <div class="cart-products">
                     <h4>Payment details</h4>
+<<<<<<< HEAD
                     <span>All fields required</span>
+=======
+>>>>>>> b43bd105ca25c24bc30af3eb334f73b0380dd07b
                     <hr><br>
                     <div class="row">
                         <div class="col-lg-6">
@@ -127,7 +136,10 @@
                         </div>
                     </div>
                 </div>
+<<<<<<< HEAD
                 <input type="hidden" id="totalPrice" name="totalPrice" value="<?php echo round($subtotal+$subtotal*.14, 2) ?>">
+=======
+>>>>>>> b43bd105ca25c24bc30af3eb334f73b0380dd07b
                 <div class="text-right">
                     <button type="submit" class="btn btn-success" style="display: block; margin-left: auto">Checkout</button>
                 </div>
@@ -151,6 +163,10 @@
                     <button class="btn btn-primary mt-1 promocode-btn" style="margin-left: auto; display: block">Apply code!</button>
                     <hr>
                     <p>Total: <b id="original-total" style="color: red; margin-left:10px; text-decoration:line-through"></b> <b id="total" style="color:green">£<?php echo round($subtotal+$subtotal*.14, 2) ?></b></p>
+<<<<<<< HEAD
+=======
+                    <input type="hidden" id="totalPrice" name="totalPrice" value="<?php echo round($subtotal+$subtotal*.14, 2) ?>">
+>>>>>>> b43bd105ca25c24bc30af3eb334f73b0380dd07b
                 </div>
             </div>
         </div>
@@ -158,6 +174,7 @@
 </div>
 
 <?php
+<<<<<<< HEAD
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
@@ -171,6 +188,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     $products_list = substr($products_list, 0, -1);
 
+=======
+    include "inc/footer.php";
+    ob_end_flush();
+?>
+
+<?php
+
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+>>>>>>> b43bd105ca25c24bc30af3eb334f73b0380dd07b
     $stmt = $con->prepare("INSERT INTO orders(total, name, email, phone, address, products) VALUES (:total, :name, :email, :phone, :address, :products)");
     $stmt->execute(array(
         "total" => $_POST["totalPrice"],
@@ -178,6 +205,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         "email" => $_POST["cus_email"],
         "phone" => $_POST["cus_phone"],
         "address" => $_POST["cus_address"],
+<<<<<<< HEAD
         "products" => $products_list
     ));
 
@@ -201,4 +229,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <?php
     include "inc/footer.php";
     ob_end_flush();
+=======
+        "products" => $products
+    ));
+
+}
+
+>>>>>>> b43bd105ca25c24bc30af3eb334f73b0380dd07b
 ?>
