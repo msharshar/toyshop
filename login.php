@@ -40,11 +40,6 @@
 
 </div>
 
-<?php
-    include "inc/footer.php";
-    ob_end_flush();
-?>
-
 <!-- Handle Login Request -->
 <?php
 
@@ -71,3 +66,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
 }
+?>
+
+<?php
+    include "inc/footer.php";
+    ob_end_flush();
+?>

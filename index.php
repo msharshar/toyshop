@@ -20,11 +20,11 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <label class="form-label">From</label>
-                                    <input type="number" name="min-price" class="form-control" placeholder="Min price">
+                                    <input type="number" name="min-price" class="form-control" placeholder="Min price" value="<?php if(isset($_GET["min-price"])){echo $_GET["min-price"];} ?>">
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label">To</label>
-                                    <input type="number" name="max-price" class="form-control" placeholder="Max price">
+                                    <input type="number" name="max-price" class="form-control" placeholder="Max price" value="<?php if(isset($_GET["max-price"])){echo $_GET["max-price"];} ?>">
                                 </div>
                             </div>
                         </div>
@@ -38,14 +38,25 @@
                             $brands = $stmt->fetchAll();
 
                             foreach($brands as $brand) {
-                                echo '
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="'.$brand["brand"].'">
-                                    <label class="form-check-label">
-                                        '.$brand["brand"].'
-                                    </label>
-                                </div>
-                                ';
+                                if(isset($_GET[$brand["brand"]])){
+                                    echo '
+                                    <div class="form-check">
+                                        <input class="form-check-input" checked type="checkbox" name="'.$brand["brand"].'">
+                                        <label class="form-check-label">
+                                            '.$brand["brand"].'
+                                        </label>
+                                    </div>
+                                    ';
+                                }else{
+                                    echo '
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="'.$brand["brand"].'">
+                                        <label class="form-check-label">
+                                            '.$brand["brand"].'
+                                        </label>
+                                    </div>
+                                    ';
+                                }
                             }
                         ?>
 
@@ -57,45 +68,69 @@
             </div>
             <div class="col-lg-9">
                 <h2>Our products</h2>
-                <p>Choose from a variety of products</p>
+                <?php
+                    if(isset($_GET["query"])) {
+                        echo "<p>Search results for: ".$_GET['query']."</p>";
+                    }else{
+                        echo "<p>Choose from a variety of products</p>";
+                    }
+                ?>
+                
 
                 <?php
 
-                    if($_SERVER["REQUEST_METHOD"] == "GET" && $_GET["action"] == "filter"){
-
-                        if($_GET["min-price"] == ""){
-                            $minPrice = 0;
-                        }else{
-                            $minPrice = $_GET["min-price"];
-                        }
-
-                        if($_GET["max-price"] == ""){
-                            $maxPrice = 100000;
-                        }else{
-                            $maxPrice = $_GET["max-price"];
-                        }
-
-                        $selectedBrands = [];
-                        foreach($brands as $brand) {
-                            if(isset($_GET[$brand["brand"]])){
-                                $selectedBrands[] = $brand["brand"];
+                    if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["action"])){
+                        if($_GET["action"] == "filter"){
+                            if($_GET["min-price"] == ""){
+                                $minPrice = 0;
+                            }else{
+                                $minPrice = $_GET["min-price"];
                             }
-                        }
-                        if($selectedBrands == []) {
+    
+                            if($_GET["max-price"] == ""){
+                                $maxPrice = 100000;
+                            }else{
+                                $maxPrice = $_GET["max-price"];
+                            }
+    
+                            $selectedBrands = [];
                             foreach($brands as $brand) {
-                                $selectedBrands[] = $brand["brand"];
+                                if(isset($_GET[$brand["brand"]])){
+                                    $selectedBrands[] = $brand["brand"];
+                                }
                             }
+                            if($selectedBrands == []) {
+                                foreach($brands as $brand) {
+                                    $selectedBrands[] = $brand["brand"];
+                                }
+                            }
+                            $selectedBrands = '("' . implode('","', $selectedBrands) .'")';
+    
+                            $stmt = $con->prepare('SELECT * FROM items WHERE brand IN' . $selectedBrands . 'AND price BETWEEN ? AND ?');
+                            $stmt->execute(array($minPrice, $maxPrice));
+                            $products = $stmt->fetchAll();
                         }
-                        $selectedBrands = '("' . implode('","', $selectedBrands) .'")';
 
-                        $stmt = $con->prepare('SELECT * FROM items WHERE brand IN' . $selectedBrands . 'AND price BETWEEN ? AND ?');
-                        $stmt->execute(array($minPrice, $maxPrice));
-                        $products = $stmt->fetchAll();
+                        if($_GET["action"] == "search"){
+                            $query = $_GET["query"];
+    
+                            $stmt = $con->prepare("SELECT * FROM items WHERE brand LIKE '%$query%' OR name LIKE '%$query%'");
+                            $stmt->execute();
+                            $products = $stmt->fetchAll();
+                        }
 
                     }else{
                         $stmt = $con->prepare("SELECT * FROM items");
                         $stmt->execute();
                         $products = $stmt->fetchAll();
+                    }
+
+                    if(checkAuth()) {
+                        $userID = $_SESSION["userID"];
+                        $userType = "user";
+                    }else{
+                        $userID = $_COOKIE["guestID"];
+                        $userType = "guest";
                     }
 
 
@@ -104,13 +139,14 @@
                         <div class="product">
                             <div class="outside">
                                 <div class="top" style="background: url(uploads/products/<?php echo $product["image"] ?>) no-repeat center center"></div>
-                                <div class="bottom">
+                                <div class="bottom <?php if(inCart($userID, $product["id"], $userType)) { echo "clicked"; } ?>">
                                 <div class="left">
                                     <div class="details">
                                     <h4><?php echo $product["name"] ?></h4>
                                     <p>£<?php echo $product["price"] ?></p>
                                     </div>
                                     <div class="buy"><i class="material-icons">add_shopping_cart</i></div>
+                                    <input type="hidden" value="<?php echo $product["id"] ?>">
                                 </div>
                                 <div class="right">
                                     <div class="done"><i class="material-icons">done</i></div>
@@ -119,6 +155,7 @@
                                     <p>Added to your cart</p>
                                     </div>
                                     <div class="remove"><i class="material-icons">clear</i></div>
+                                    <input type="hidden" value="<?php echo $product["id"] ?>">
                                 </div>
                                 </div>
                             </div>
