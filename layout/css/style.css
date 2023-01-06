@@ -3,12 +3,18 @@ html, body {
     font-family: sans-serif;
     /* padding: 25px; */
 }
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
 footer {
     background-color: #000;
     padding: 20px 0;
     text-align: center;
     color: #FFF;
+    margin-top: auto;
 }
 
 .shop {
@@ -222,4 +228,123 @@ footer {
 	background-color: #FFF;
 	border-radius: 25px;
 	padding: 50px;
+}
+
+.buy, .done, .remove {
+  cursor: pointer;
+}
+
+.cart .summary {
+  background-color: #FFF;
+  padding: 30px;
+  border-radius: 25px;
+  position: sticky;
+	top: 50px;
+	bottom: 10px;
+  max-height: 100vh;
+  overflow-y: scroll;
+  margin-top: 50px;
+  margin-bottom: 30px;
+}
+
+.cart .summary::-webkit-scrollbar {
+  width: 0;
+}
+
+.cart .summary b {
+  float: right;
+}
+
+.cart .cart-products {
+  padding: 25px;
+  background-color: #FFF;
+  margin: 50px 0;
+  border-radius: 25px;
+}
+
+.cart-product{
+  position: relative;
+}
+
+.cart-product img {
+  width: 100%;
+}
+
+.cart-product input {
+  width: 100px;
+  text-align: center;
+}
+
+.cart-product .remove-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.profile  {
+  margin: 50px 0;
+}
+
+.profile-sidebar {
+  background-color: #FFF;
+  padding: 30px 0;
+  border-radius: 25px;
+  height: 75vh;
+  position: relative;
+}
+
+.profile-sidebar a {
+  color: #000;
+  display: block;
+  text-decoration: none;
+  padding: 15px 30px;
+  transition: .5s all;
+}
+
+.profile-sidebar a:hover {
+  background-color: #f0f0f0;
+}
+
+.profile-sidebar a:last-of-type {
+  position: absolute;
+  bottom: 30px;
+  width: 100%;
+}
+
+.orders {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 25px;
+}
+
+.order {
+  background-color: #f0f0f0;
+  padding: 20px;
+  margin: 10px 0;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.order .order-info {
+  margin: 0 30px;
+}
+
+.order img {
+  max-width: 50px;
+}
+
+.order-status i{
+  margin: 0 5px;
+  color: green;
+}
+
+.order-status span{
+  margin-right: 10%;
+}
+
+#countdown {
+  color: red;
+  float: right;
+  font-weight: bold;
+  font-size: 20px;
 }
