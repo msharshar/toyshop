@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">The Toy Shop</a>
+        <a class="navbar-brand" href="index.php">The Toy Shop</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-expanded="false">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -21,6 +21,7 @@
                                     $user["name"].'
                                 </a>
                                 <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="profile.php"><i class="bi bi-person-fill"></i> Profile</a></li>
                                     <li><a class="dropdown-item" href="logout.php"><i class="bi bi-box-arrow-left"></i> Logout</a></li>
                                 </ul>
                             </li>';
@@ -31,8 +32,9 @@
                     
                 </li>
             </ul>
-            <form class="d-flex" role="search" style="flex-grow: 1; margin-left: 30px">
-                <input class="form-control me-2" type="search" placeholder="Product name, brand or price range" aria-label="Search">
+            <form method="GET" action="index.php" class="d-flex" role="search" style="flex-grow: 1; margin-left: 30px">
+                <input type="hidden" name="action" value="search">
+                <input class="form-control me-2" name="query" type="search" placeholder="Search by product name or brand" aria-label="Search" value="<?php if(isset($_GET["query"])){ echo $_GET["query"]; } ?>">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
         </div>

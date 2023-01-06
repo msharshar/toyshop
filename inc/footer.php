@@ -1,7 +1,7 @@
         
 
         <footer>
-            <span>All rights reserved</span>
+            <span>All rights reserved &copy;2023</span>
         </footer>
 
 
