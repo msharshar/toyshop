@@ -66,7 +66,7 @@
                 ?>
                 <form method="POST">
                 <div class="cart-products">
-                    <h4>Shippment info</h4>
+                    <h4>Shipping info</h4>
                     <span>All fields required</span>
                     <hr><br>
                     <div class="row">
@@ -77,7 +77,7 @@
 
                         <div class="col-lg-6">
                             <label class="form-label">Email</label>
-                            <input type="email" name="cus_email" class="form-control" value="<?php if(checkAuth()){echo $user["name"];} ?>" required>
+                            <input type="email" name="cus_email" class="form-control" value="<?php if(checkAuth()){echo $user["email"];} ?>" required>
                         </div>
 
                         <div class="col-lg-12">

@@ -157,7 +157,7 @@
                                 <div class="right">
                                     <div class="done"><i class="material-icons">done</i></div>
                                     <div class="details">
-                                    <h1>Chair</h1>
+                                    <h4><?php echo $product["name"] ?></h4>
                                     <p>Added to your cart</p>
                                     </div>
                                     <div class="remove"><i class="material-icons">clear</i></div>
